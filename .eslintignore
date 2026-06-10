@@ -1,0 +1,19 @@
+# Next.js
+.next/
+out/
+
+# Dependências
+node_modules/
+
+# Build
+build/
+dist/
+
+# Configs (já tratadas pelo próprio bundler)
+*.config.js
+*.config.ts
+next-env.d.ts
+
+# Gerados automaticamente
+**/*.generated.ts
+**/*.generated.tsx
