@@ -12,8 +12,12 @@ import {
 } from "@/components/ProjectCards/styled";
 
 interface SearchFilterBarProps {
-    search: string;
-    onSearch: (value: string) => void;
+    searchName: string;
+    onSearchName: (value: string) => void;
+    searchState: string;
+    onSearchState: (value: string) => void;
+    searchResponsible: string;
+    onSearchResponsible: (value: string) => void;
     filtersOpen: boolean;
     onToggleFilters: () => void;
     activeFilterCount: number;
@@ -48,8 +52,12 @@ function IconChevron() {
 }
 
 export default function SearchFilterBar({
-    search,
-    onSearch,
+    searchName,
+    onSearchName,
+    searchState,
+    onSearchState,
+    searchResponsible,
+    onSearchResponsible,
     filtersOpen,
     onToggleFilters,
     activeFilterCount,
@@ -62,11 +70,30 @@ export default function SearchFilterBar({
                 <SearchWrapper>
                     <IconSearch />
                     <SearchInput
-                        placeholder="Buscar por nome, responsável ou estado…"
-                        value={search}
-                        onChange={(e) => onSearch(e.target.value)}
+                        placeholder="Nome…"
+                        value={searchName}
+                        onChange={(e) => onSearchName(e.target.value)}
                     />
                 </SearchWrapper>
+
+                <SearchWrapper>
+                    <IconSearch />
+                    <SearchInput
+                        placeholder="Estado…"
+                        value={searchState}
+                        onChange={(e) => onSearchState(e.target.value)}
+                    />
+                </SearchWrapper>
+
+                <SearchWrapper>
+                    <IconSearch />
+                    <SearchInput
+                        placeholder="Responsável…"
+                        value={searchResponsible}
+                        onChange={(e) => onSearchResponsible(e.target.value)}
+                    />
+                </SearchWrapper>
+
                 <FilterToggleBtn
                     $open={filtersOpen}
                     $hasFilters={hasActiveFilters}
@@ -81,6 +108,7 @@ export default function SearchFilterBar({
                         <IconChevron />
                     </FilterChevron>
                 </FilterToggleBtn>
+
                 {hasActiveFilters && (
                     <ClearButton onClick={onClear}>Limpar</ClearButton>
                 )}

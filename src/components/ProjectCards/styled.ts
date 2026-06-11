@@ -103,6 +103,7 @@ export const SearchAndFilterRow = styled.div`
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    flex-wrap: wrap;
 `;
 
 export const SearchWrapper = styled.div`

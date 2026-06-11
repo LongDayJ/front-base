@@ -25,12 +25,14 @@ export const Container = styled.section`
     }
 
     @media (max-width: 768px) {
-        height: 90dvh;
-        max-height: 87dvh;
+        height: auto;
+        min-height: 100dvh;
+        max-height: none;
+        overflow-y: auto;
         position: relative;
 
         &::before {
-            height: 100dvh;
+            height: 100%;
             z-index: 40;
         }
 
@@ -40,7 +42,7 @@ export const Container = styled.section`
             right: 0;
             top: 0;
             width: 0.3rem;
-            height: 100dvh;
+            height: 100%;
             z-index: 40;
             background: linear-gradient(180deg, ${({ theme }) => theme.colors.yellowVibrant}, ${({ theme }) => theme.colors.greenBackground});
         }

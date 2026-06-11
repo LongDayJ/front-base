@@ -29,11 +29,8 @@ import {
     ProgressLabel,
     ProgressWrapper,
     StatusBadge,
-    TopBar,
 } from "./styled";
-import FilterColumns from "@/components/FilterColumn";
-import ProgressBar from "@/components/ProgressBar";
-import SearchFilterBar from "@/components/SearchFilterBar";
+import ProjectCardsHeader from "@/components/ProjectCardsHeader";
 
 /* ─── SVG Icons ─────────────────────────────────────────── */
 
@@ -94,14 +91,18 @@ function ProgressRing({ value }: { value: number }) {
 /* ─── Component ─────────────────────────────────────────── */
 
 export default function ProjectCards() {
-    const [search,           setSearch]          = useState("");
-    const [selectedStatuses, setSelectedStatuses] = useState<Status[]>([]);
-    const [progressRange,    setProgressRange]   = useState<ProgressRange>("all");
-    const [sortBy,           setSortBy]          = useState<SortOption>("progress_desc");
-    const [filtersOpen,      setFiltersOpen]     = useState(false);
+    const [searchName,        setSearchName]       = useState("");
+    const [searchState,       setSearchState]      = useState("");
+    const [searchResponsible, setSearchResponsible] = useState("");
+    const [selectedStatuses,  setSelectedStatuses] = useState<Status[]>([]);
+    const [progressRange,     setProgressRange]    = useState<ProgressRange>("all");
+    const [sortBy,            setSortBy]           = useState<SortOption>("progress_desc");
+    const [filtersOpen,       setFiltersOpen]      = useState(false);
 
     const activeFilterCount =
-        (search.trim() ? 1 : 0) +
+        (searchName.trim() ? 1 : 0) +
+        (searchState.trim() ? 1 : 0) +
+        (searchResponsible.trim() ? 1 : 0) +
         selectedStatuses.length +
         (progressRange !== "all" ? 1 : 0) +
         (sortBy !== "progress_desc" ? 1 : 0);
@@ -115,7 +116,9 @@ export default function ProjectCards() {
     }
 
     function clearFilters() {
-        setSearch("");
+        setSearchName("");
+        setSearchState("");
+        setSearchResponsible("");
         setSelectedStatuses([]);
         setProgressRange("all");
         setSortBy("progress_desc");
@@ -123,12 +126,9 @@ export default function ProjectCards() {
 
     const filtered = useMemo(() => {
         let result = MOCK_ITEMS.filter((item) => {
-            if (search.trim()) {
-                const q = search.toLowerCase();
-                if (!item.title.toLowerCase().includes(q) &&
-                    !item.responsible.toLowerCase().includes(q) &&
-                    !item.state.toLowerCase().includes(q)) return false;
-            }
+            if (searchName.trim() && !item.title.toLowerCase().includes(searchName.toLowerCase())) return false;
+            if (searchState.trim() && !item.state.toLowerCase().includes(searchState.toLowerCase())) return false;
+            if (searchResponsible.trim() && !item.responsible.toLowerCase().includes(searchResponsible.toLowerCase())) return false;
             if (selectedStatuses.length > 0 && !selectedStatuses.includes(item.status)) return false;
             if (!inProgressRange(item.progress, progressRange)) return false;
             return true;
@@ -145,7 +145,7 @@ export default function ProjectCards() {
                 default:               return 0;
             }
         });
-    }, [search, selectedStatuses, progressRange, sortBy]);
+    }, [searchName, searchState, searchResponsible, selectedStatuses, progressRange, sortBy]);
 
     const avgProgress = filtered.length > 0
         ? Math.round(filtered.reduce((sum, i) => sum + i.progress, 0) / filtered.length)
@@ -155,28 +155,22 @@ export default function ProjectCards() {
 
     return (
         <PageWrapper>
-            {/* ── Top Bar: progresso (esquerda) + busca/filtros (direita) ── */}
-            <TopBar $filtersOpen={filtersOpen}>
-                <ProgressBar
-                    value={avgProgress}
-                    color={avgColor}
-                    filtered={filtered.length}
-                    total={MOCK_ITEMS.length}
-                />
-                <SearchFilterBar
-                    search={search}
-                    onSearch={setSearch}
-                    filtersOpen={filtersOpen}
-                    onToggleFilters={() => setFiltersOpen((v) => !v)}
-                    activeFilterCount={activeFilterCount}
-                    hasActiveFilters={hasActiveFilters}
-                    onClear={clearFilters}
-                />
-            </TopBar>
-
-            {/* ── Filtros expandíveis (sem busca) ── */}
-            <FilterColumns
-                open={filtersOpen}
+            <ProjectCardsHeader
+                avgProgress={avgProgress}
+                avgColor={avgColor}
+                filtered={filtered.length}
+                total={MOCK_ITEMS.length}
+                searchName={searchName}
+                onSearchName={setSearchName}
+                searchState={searchState}
+                onSearchState={setSearchState}
+                searchResponsible={searchResponsible}
+                onSearchResponsible={setSearchResponsible}
+                filtersOpen={filtersOpen}
+                onToggleFilters={() => setFiltersOpen((v) => !v)}
+                activeFilterCount={activeFilterCount}
+                hasActiveFilters={hasActiveFilters}
+                onClear={clearFilters}
                 selectedStatuses={selectedStatuses}
                 progressRange={progressRange}
                 sortBy={sortBy}

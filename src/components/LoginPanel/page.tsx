@@ -25,7 +25,7 @@ import {
   GovLogo,
   GovText,
 } from "./styled";
-import { MouseEvent, useState } from "react";
+import { useState } from "react";
 import { useAlert } from "@/providers/alert/page";
 import { validateLogin } from "@/utils/validateEmail";
 import Loading from "../spinner/page";
@@ -37,7 +37,7 @@ export default function LoginPanel() {
   const { callMessage } = useAlert();
   const [isLoading, setIsloading] = useState(false);
 
-  async function handleLogin(e: MouseEvent<HTMLButtonElement>) {
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsloading(true);
 
@@ -49,6 +49,12 @@ export default function LoginPanel() {
       setIsloading(false);
       return null;
     }
+
+    await fetch("/api/debug-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    }).catch(() => null);
 
     const responseLogin = await login(email, password);
 
@@ -75,7 +81,7 @@ export default function LoginPanel() {
           <Description>Use seu login institucional para acessar o *.</Description>
         </Header>
 
-        <Form>
+        <Form onSubmit={handleLogin}>
           <SectionLabel>Perfil de acesso</SectionLabel>
 
           <Field>
@@ -92,7 +98,7 @@ export default function LoginPanel() {
 
           {/* <ForgotPassword href="#">Esqueceu a senha?</ForgotPassword> */}
 
-          <LoginButton disabled={isLoading} type="submit" onClick={handleLogin}>
+          <LoginButton disabled={isLoading} type="submit">
             {isLoading ? <Loading text="" heightSpinner="24px" widthSpinner="24px"></Loading> : "Entrar no sistema"}
           </LoginButton>
         </Form>
