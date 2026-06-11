@@ -104,12 +104,12 @@ export const ModuleCard = styled.div<{ $color: string }>`
 
     box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.08);
 
-    &:hover {
-        transform: translateY(-0.5vh);
-        border: 0.25vh solid ${({ $color }) => $color};
-        border-top: 1vh solid ${({ $color }) => $color};
-        box-shadow: 0 1vh 2vh ${({ $color }) => $color};
-    }
+    // &:hover {
+    //     transform: translateY(-0.5vh);
+    //     border: 0.25vh solid ${({ $color }) => $color};
+    //     border-top: 1vh solid ${({ $color }) => $color};
+    //     box-shadow: 0 1vh 2vh ${({ $color }) => $color};
+    // }
 
     @media (max-width: 768px) {
         width: 85dvw;
@@ -190,6 +190,72 @@ export const CardFooter = styled.span`
 
     @media (max-width: 768px) {
         font-size: ${({ theme }) => theme.fontSizes.md};
+    }
+`;
+
+export const AlertButtonsGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+`;
+
+export const ThemeButtonsGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5rem;
+`;
+
+export const ThemeDot = styled.span<{ $color: string }>`
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: ${({ $color }) => $color};
+    flex-shrink: 0;
+`;
+
+export const ThemeButton = styled.button<{ $color: string; $active: boolean }>`
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    border: 2px solid ${({ $active, $color }) => ($active ? $color : "rgba(0,0,0,0.1)")};
+    background: ${({ $active, $color }) => ($active ? `${$color}22` : "transparent")};
+    color: ${({ theme }) => theme.colors.greenDark};
+    font-size: 0.75vw;
+    font-weight: ${({ $active }) => ($active ? 700 : 500)};
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+
+    &:hover {
+        border-color: ${({ $color }) => $color};
+        background: ${({ $color }) => `${$color}22`};
+    }
+
+    @media (max-width: 768px) {
+        font-size: ${({ theme }) => theme.fontSizes.xs};
+    }
+`;
+
+export const AlertTestButton = styled.button<{ $color: string }>`
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
+    border: 2px solid ${({ $color }) => $color};
+    background: transparent;
+    color: ${({ $color }) => $color};
+    font-size: 0.8vw;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover {
+        background: ${({ $color }) => $color};
+        color: #fff;
+    }
+
+    @media (max-width: 768px) {
+        font-size: ${({ theme }) => theme.fontSizes.sm};
     }
 `;
 

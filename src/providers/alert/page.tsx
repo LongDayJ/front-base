@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, useCallback, useContext, useState, ReactNode } from "react";
-import styled, { keyframes } from "styled-components";
+import { createContext, useCallback, useContext, useRef, useState, ReactNode } from "react";
+import { Toast, ToastContainer, ToastIcon } from "./styled";
 
 type AlertType = "success" | "warning" | "error" | "info";
 
@@ -17,23 +17,71 @@ interface AlertContextData {
 
 const AlertContext = createContext<AlertContextData>({} as AlertContextData);
 
+const iconMap: Record<AlertType, string> = {
+    success: "✓",
+    warning: "⚠",
+    error: "✕",
+    info: "ℹ",
+};
+
+const DURATION = 4000;
+
+type TimerEntry = {
+    timeoutId: ReturnType<typeof setTimeout> | null;
+    endsAt: number;
+};
+
 export function AlertProvider({ children }: { children: ReactNode }) {
     const [messages, setMessages] = useState<AlertMessage[]>([]);
+    const timers = useRef<Map<number, TimerEntry>>(new Map());
+
+    const removeMessage = useCallback((id: number) => {
+        const entry = timers.current.get(id);
+        if (entry?.timeoutId) clearTimeout(entry.timeoutId);
+        timers.current.delete(id);
+        setMessages((prev) => prev.filter((m) => m.id !== id));
+    }, []);
+
+    const pauseMessage = useCallback((id: number) => {
+        const entry = timers.current.get(id);
+        if (!entry || entry.timeoutId === null) return;
+        clearTimeout(entry.timeoutId);
+        const remaining = Math.max(0, entry.endsAt - Date.now());
+        timers.current.set(id, { timeoutId: null, endsAt: Date.now() + remaining });
+    }, []);
+
+    const resetMessage = useCallback((id: number) => {
+        const entry = timers.current.get(id);
+        if (!entry) return;
+        if (entry.timeoutId) clearTimeout(entry.timeoutId);
+        const timeoutId = setTimeout(() => removeMessage(id), DURATION);
+        timers.current.set(id, { timeoutId, endsAt: Date.now() + DURATION });
+    }, [removeMessage]);
 
     const callMessage = useCallback((text: string, type: AlertType) => {
         const id = Date.now();
-        setMessages((prev) => [...prev, { id, text, type }]);
-        setTimeout(() => {
-            setMessages((prev) => prev.filter((m) => m.id !== id));
-        }, 4000);
-    }, []);
+        setMessages((prev) => {
+            const next = [...prev, { id, text, type }];
+            return next.length > 4 ? next.slice(-4) : next;
+        });
+        const endsAt = Date.now() + DURATION;
+        const timeoutId = setTimeout(() => removeMessage(id), DURATION);
+        timers.current.set(id, { timeoutId, endsAt });
+    }, [removeMessage]);
 
     return (
         <AlertContext.Provider value={{ callMessage }}>
             {children}
             <ToastContainer>
                 {messages.map((m) => (
-                    <Toast key={m.id} $type={m.type}>
+                    <Toast
+                        key={m.id}
+                        $type={m.type}
+                        onClick={() => removeMessage(m.id)}
+                        onMouseEnter={() => pauseMessage(m.id)}
+                        onMouseLeave={() => resetMessage(m.id)}
+                    >
+                        <ToastIcon $type={m.type}>{iconMap[m.type]}</ToastIcon>
                         {m.text}
                     </Toast>
                 ))}
@@ -45,36 +93,3 @@ export function AlertProvider({ children }: { children: ReactNode }) {
 export function useAlert() {
     return useContext(AlertContext);
 }
-
-const slideIn = keyframes`
-    from { transform: translateX(120%); opacity: 0; }
-    to   { transform: translateX(0);    opacity: 1; }
-`;
-
-const ToastContainer = styled.div`
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-`;
-
-const bgMap: Record<AlertType, string> = {
-    success: "#1b5e3b",
-    warning: "#b45309",
-    error: "#9b1200",
-    info: "#3135ec",
-};
-
-const Toast = styled.div<{ $type: AlertType }>`
-    padding: 0.75rem 1.25rem;
-    border-radius: 8px;
-    background: ${({ $type }) => bgMap[$type]};
-    color: #fff;
-    font-size: 0.875rem;
-    max-width: 360px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    animation: ${slideIn} 0.25s ease;
-`;

@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { useServerInsertedHTML } from "next/navigation";
-import { ServerStyleSheet, StyleSheetManager, ThemeProvider } from "styled-components";
-import { theme } from "@/styles/theme";
+import { ServerStyleSheet, StyleSheetManager } from "styled-components";
+import { ThemeContextProvider } from "@/context/theme/theme.context";
 import { AlertProvider } from "@/providers/alert/page";
 import AuthWrapper from "@/providers/AuthWrapper";
 
@@ -17,11 +17,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     });
 
     const content = (
-        <ThemeProvider theme={theme}>
+        <ThemeContextProvider>
             <AlertProvider>
                 <AuthWrapper>{children}</AuthWrapper>
             </AlertProvider>
-        </ThemeProvider>
+        </ThemeContextProvider>
     );
 
     if (typeof window !== "undefined") {

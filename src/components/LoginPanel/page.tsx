@@ -52,7 +52,7 @@ export default function LoginPanel() {
 
     const responseLogin = await login(email, password);
 
-    if (!responseLogin.status) callMessage(responseLogin.message ?? "Sistema SAH estÃ¡ temporariamente fora do ar!", "error");
+    if (!responseLogin.status) callMessage(responseLogin.message ?? "Sistema SAH está temporariamente fora do ar!", "error");
     setIsloading(false);
   }
 
@@ -63,8 +63,8 @@ export default function LoginPanel() {
           <GovLogo>MS</GovLogo>
 
           <GovText>
-            <strong>MinistÃ©rio da SaÃºde</strong>
-            <span>Departamento de AtenÃ§Ã£o ao CÃ¢ncer </span>
+            <strong>Ministério da Saúde</strong>
+            <span>Departamento de Atenção ao Câncer</span>
           </GovText>
         </GovBar>
         <Header>
@@ -87,7 +87,7 @@ export default function LoginPanel() {
           <Field>
             <label>Senha</label>
 
-            <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" />
+            <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="••••••••" />
           </Field>
 
           {/* <ForgotPassword href="#">Esqueceu a senha?</ForgotPassword> */}
@@ -98,7 +98,7 @@ export default function LoginPanel() {
         </Form>
 
         <Footer>
-          <Version>Front Base v1.0 Â· 2026</Version>
+          <Version>Front Base v1.0 · 2026</Version>
 
           {/* <Links>
             <a href="#">Suporte</a>
