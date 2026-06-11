@@ -1,0 +1,148 @@
+export type Status = "em_andamento" | "concluido" | "atrasado" | "nao_iniciado" | "pendente";
+
+export interface ProjectItem {
+    id: number;
+    title: string;
+    status: Status;
+    deliveryDate: string;
+    deliveryDateISO: string;
+    state: string;
+    responsible: string;
+    observations: string;
+    progress: number;
+}
+
+export const MOCK_ITEMS: ProjectItem[] = [
+    {
+        id: 1,
+        title: "Lorem Ipsum Dolor (Sit Amet - LA)",
+        status: "em_andamento",
+        deliveryDate: "29/06/2026",
+        deliveryDateISO: "2026-06-29",
+        state: "LA",
+        responsible: "Lorem",
+        observations: "01/06/2026: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        progress: 76,
+    },
+    {
+        id: 2,
+        title: "Consectetur Adipiscing (Elit Sed - DO)",
+        status: "em_andamento",
+        deliveryDate: "29/06/2026",
+        deliveryDateISO: "2026-06-29",
+        state: "DO",
+        responsible: "Ipsum",
+        observations: "02/06/2026: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        progress: 75,
+    },
+    {
+        id: 3,
+        title: "Eiusmod Tempor Incididunt (Labore - UT)",
+        status: "em_andamento",
+        deliveryDate: "02/07/2026",
+        deliveryDateISO: "2026-07-02",
+        state: "UT",
+        responsible: "Dolor",
+        observations: "03/06/2026: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        progress: 67,
+    },
+    {
+        id: 4,
+        title: "Dolore Magna Aliqua (Enim Ad - MI)",
+        status: "nao_iniciado",
+        deliveryDate: "30/08/2026",
+        deliveryDateISO: "2026-08-30",
+        state: "MI",
+        responsible: "Amet",
+        observations: "Nenhuma",
+        progress: 0,
+    },
+    {
+        id: 5,
+        title: "Minim Veniam Quis (Nostrud - EX)",
+        status: "em_andamento",
+        deliveryDate: "27/08/2026",
+        deliveryDateISO: "2026-08-27",
+        state: "EX",
+        responsible: "Sit",
+        observations: "05/06/2026: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
+        progress: 40,
+    },
+    {
+        id: 6,
+        title: "Exercitation Ullamco (Laboris Nisi - AL)",
+        status: "pendente",
+        deliveryDate: "27/08/2026",
+        deliveryDateISO: "2026-08-27",
+        state: "AL",
+        responsible: "Consectetur",
+        observations: "06/06/2026: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
+        progress: 22,
+    },
+    {
+        id: 7,
+        title: "Reprehenderit Voluptate (Velit Esse - CI)",
+        status: "concluido",
+        deliveryDate: "15/04/2026",
+        deliveryDateISO: "2026-04-15",
+        state: "CI",
+        responsible: "Adipiscing",
+        observations: "07/06/2026: Lorem ipsum dolor sit amet, omnia sunt communia.",
+        progress: 100,
+    },
+    {
+        id: 8,
+        title: "Cillum Dolore Eu (Fugiat Nulla - PA)",
+        status: "atrasado",
+        deliveryDate: "01/05/2026",
+        deliveryDateISO: "2026-05-01",
+        state: "PA",
+        responsible: "Elit",
+        observations: "08/06/2026: Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+        progress: 48,
+    },
+    {
+        id: 9,
+        title: "Excepteur Sint Occaecat (Cupidatat - NP)",
+        status: "em_andamento",
+        deliveryDate: "08/10/2026",
+        deliveryDateISO: "2026-10-08",
+        state: "NP",
+        responsible: "Sed",
+        observations: "09/06/2026: Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet consectetur.",
+        progress: 31,
+    },
+    {
+        id: 10,
+        title: "Adipisci Velit Nemo (Architecto - BE)",
+        status: "nao_iniciado",
+        deliveryDate: "15/11/2026",
+        deliveryDateISO: "2026-11-15",
+        state: "BE",
+        responsible: "Dolor",
+        observations: "Nenhuma",
+        progress: 0,
+    },
+    {
+        id: 11,
+        title: "Beatae Vitae Dicta (Explicabo - VO)",
+        status: "pendente",
+        deliveryDate: "20/09/2026",
+        deliveryDateISO: "2026-09-20",
+        state: "VO",
+        responsible: "Ipsum",
+        observations: "10/06/2026: Aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione.",
+        progress: 15,
+    },
+    {
+        id: 12,
+        title: "Voluptatem Sequi Nesciunt (Neque - PO)",
+        status: "atrasado",
+        deliveryDate: "10/03/2026",
+        deliveryDateISO: "2026-03-10",
+        state: "PO",
+        responsible: "Lorem",
+        observations: "11/06/2026: Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse.",
+        progress: 58,
+    },
+];

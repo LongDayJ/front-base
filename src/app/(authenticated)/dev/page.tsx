@@ -1,5 +1,5 @@
 import ModulePanel from "@/components/module/page";
 
-export default function ModulePage() {
+export default function DevPage() {
     return <ModulePanel />;
 }

@@ -17,9 +17,28 @@ const mockData: Proposal[] = [
     { id: "8", nome: "HEMOCE Fortaleza", situacao: "Em análise", uf: "CE", data: "2026-05-28" },
 ];
 
+function isFlagEnabled(id: string): boolean {
+    try {
+        const saved = localStorage.getItem("dev:feature-flags");
+        if (!saved) return false;
+        return (JSON.parse(saved) as Record<string, boolean>)[id] ?? false;
+    } catch {
+        return false;
+    }
+}
+
 export const proposalService = {
     getLengthProposal: async (): Promise<{ status: boolean; message?: string; data: Proposal[] }> => {
         await new Promise((r) => setTimeout(r, 500));
+
+        if (isFlagEnabled("mock-api-errors")) {
+            return { status: false, message: "Erro simulado pela flag mock-api-errors.", data: [] };
+        }
+
+        if (isFlagEnabled("verbose-logging")) {
+            console.log("[proposalService] getLengthProposal →", mockData);
+        }
+
         return { status: true, data: mockData };
     },
 };

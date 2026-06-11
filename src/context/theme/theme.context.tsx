@@ -29,6 +29,18 @@ interface ThemeContextData {
 
 const ThemeContext = createContext<ThemeContextData>({} as ThemeContextData);
 
+function flattenObject(obj: Record<string, unknown>, prefix = ""): Record<string, string> {
+    return Object.entries(obj).reduce((acc, [key, val]) => {
+        const fullKey = prefix ? `${prefix}-${key}` : key;
+        if (typeof val === "string" || typeof val === "number") {
+            acc[fullKey] = String(val);
+        } else if (val !== null && typeof val === "object") {
+            Object.assign(acc, flattenObject(val as Record<string, unknown>, fullKey));
+        }
+        return acc;
+    }, {} as Record<string, string>);
+}
+
 export function ThemeContextProvider({ children }: { children: ReactNode }) {
     const [activeTheme, setActiveTheme] = useState<ThemeName>("padrao");
 
@@ -38,6 +50,13 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
             setActiveTheme(saved);
         }
     }, []);
+
+    useEffect(() => {
+        const flat = flattenObject(THEMES[activeTheme] as unknown as Record<string, unknown>, "theme");
+        Object.entries(flat).forEach(([key, val]) => {
+            document.documentElement.style.setProperty(`--${key}`, val);
+        });
+    }, [activeTheme]);
 
     const setTheme = useCallback((name: ThemeName) => {
         setActiveTheme(name);

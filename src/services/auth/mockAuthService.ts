@@ -1,7 +1,7 @@
 import { AuthService } from "@/context/auth/type";
 import { User } from "@/context/auth/auth.context";
 
-const USER_KEY = "sah_user";
+const USER_KEY = "user";
 const SESSION_DURATION = 30 * 60 * 1000; // 30 minutos
 
 export const mockAuthService: AuthService<User> = {
@@ -21,6 +21,7 @@ export const mockAuthService: AuthService<User> = {
             permission: "Administrador",
             expiresAt: Date.now() + SESSION_DURATION,
         };
+
         localStorage.setItem(USER_KEY, JSON.stringify(user));
         return { status: true };
     },

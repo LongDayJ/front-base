@@ -11,7 +11,7 @@ export default function AuthWrapper({ children }: { children: ReactNode }) {
     return (
         <AuthProvider
             authService={mockAuthService}
-            onLoginSuccess={() => router.push("/module")}
+            onLoginSuccess={() => router.push("/dev")}
             onLogoutSuccess={() => router.push("/")}
         >
             {children}

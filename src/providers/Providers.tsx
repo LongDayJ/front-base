@@ -6,6 +6,9 @@ import { ServerStyleSheet, StyleSheetManager } from "styled-components";
 import { ThemeContextProvider } from "@/context/theme/theme.context";
 import { AlertProvider } from "@/providers/alert/page";
 import AuthWrapper from "@/providers/AuthWrapper";
+import { DevUserProvider } from "@/context/devUser/devUser.context";
+import { FeatureFlagsProvider } from "@/context/featureFlags/featureFlags.context";
+import DebugBar from "@/components/DebugBar/page";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     const [styledSheet] = useState(() => new ServerStyleSheet());
@@ -19,7 +22,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     const content = (
         <ThemeContextProvider>
             <AlertProvider>
-                <AuthWrapper>{children}</AuthWrapper>
+                <DevUserProvider>
+                    <FeatureFlagsProvider>
+                        <AuthWrapper>{children}</AuthWrapper>
+                        <DebugBar />
+                    </FeatureFlagsProvider>
+                </DevUserProvider>
             </AlertProvider>
         </ThemeContextProvider>
     );

@@ -52,7 +52,7 @@ export default function LoginPanel() {
 
     const responseLogin = await login(email, password);
 
-    if (!responseLogin.status) callMessage(responseLogin.message ?? "Sistema SAH está temporariamente fora do ar!", "error");
+    if (!responseLogin.status) callMessage(responseLogin.message ?? "Sistema está temporariamente fora do ar!", "error");
     setIsloading(false);
   }
 
