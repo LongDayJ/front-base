@@ -24,10 +24,9 @@ export const TopBar = styled.div<{ $filtersOpen: boolean }>`
     gap: 0;
     background: #fff;
     border: 1px solid #dde3ec;
-    border-radius: ${({ $filtersOpen }) => ($filtersOpen ? "10px 10px 0 0" : "10px")};
+    border-radius: 10px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     margin-bottom: 0;
-    transition: border-radius 0.05s;
 
     @media (max-width: 760px) {
         grid-template-columns: 1fr;
@@ -104,6 +103,12 @@ export const SearchAndFilterRow = styled.div`
     gap: 0.5rem;
     align-items: center;
     flex-wrap: wrap;
+
+    @media (max-width: 760px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
 `;
 
 export const SearchWrapper = styled.div`
@@ -164,6 +169,11 @@ export const FilterToggleBtn = styled.button<{ $open: boolean; $hasFilters: bool
     }
 
     svg { width: 13px; height: 13px; }
+
+    @media (max-width: 760px) {
+        width: 100%;
+        justify-content: center;
+    }
 `;
 
 export const FilterActiveBadge = styled.span`
@@ -203,24 +213,35 @@ export const ClearButton = styled.button`
         color: #dc2626;
         background: #fef2f2;
     }
+
+    @media (max-width: 760px) {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
 `;
 
 /* ─── Filter Panel (expandable below TopBar) ────────────── */
 
 export const FilterPanel = styled.div<{ $open: boolean }>`
     background: #fff;
-    border: 1px solid #dde3ec;
-    border-top: none;
+    border: ${({ $open }) => ($open ? "1px solid #dde3ec" : "none")};
     border-radius: 0 0 10px 10px;
+    box-shadow: ${({ $open }) => ($open ? "0 1px 4px rgba(0,0,0,0.05)" : "none")};
     overflow: hidden;
     max-height: ${({ $open }) => ($open ? "500px" : "0")};
     transition: max-height 0.25s ease;
-    margin-bottom: ${({ $open }) => ($open ? "1rem" : "0.75rem")};
+    // margin-top: ${({ $open }) => ($open ? "0.5rem" : "0")};
+    margin-bottom: ${({ $open }) => ($open ? "1rem" : "0")};
+
+    @media (max-width: 760px) {
+        max-height: ${({ $open }) => ($open ? "70vh" : "0")};
+        overflow-y: ${({ $open }) => ($open ? "auto" : "hidden")};
+    }
 `;
 
 export const FilterPanelInner = styled.div`
     padding: 1rem 1.25rem 1.1rem;
-    border-top: 1px solid #e9edf3;
+    // border-top: 1px solid #e9edf3;
 `;
 
 export const FilterColumnsRow = styled.div`
@@ -304,9 +325,17 @@ export const ChipCheck = styled.span<{ $active: boolean; $color?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.55rem;
-    color: #fff;
     transition: all 0.13s;
+    font-size: 0;
+
+    &::after {
+        content: '';
+        display: ${({ $active }) => ($active ? 'block' : 'none')};
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #fff;
+    }
 `;
 
 /* ─── Cards Grid ────────────────────────────────────────── */
@@ -315,6 +344,7 @@ export const CardsGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.1rem;
+    margin-top: 1.25rem;
 
     @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
     @media (max-width: 680px)  { grid-template-columns: 1fr; }

@@ -41,6 +41,7 @@ interface DevUserContextData {
     activeProfile: DevUserProfile;
     setProfile: (id: string) => void;
     profiles: DevUserProfile[];
+    hasPermission: (perm: string) => boolean;
 }
 
 const DevUserContext = createContext<DevUserContextData>({} as DevUserContextData);
@@ -65,8 +66,13 @@ export function DevUserProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(PERMISSIONS_KEY, JSON.stringify(found.permissions));
     }, []);
 
+    const hasPermission = useCallback(
+        (perm: string) => activeProfile.permissions.includes(perm),
+        [activeProfile]
+    );
+
     return (
-        <DevUserContext.Provider value={{ activeProfile, setProfile, profiles: DEV_USER_PROFILES }}>
+        <DevUserContext.Provider value={{ activeProfile, setProfile, profiles: DEV_USER_PROFILES, hasPermission }}>
             {children}
         </DevUserContext.Provider>
     );

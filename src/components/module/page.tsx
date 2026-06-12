@@ -57,7 +57,8 @@ export default function Page() {
   const router = useRouter();
   const { callMessage } = useAlert();
   const { activeTheme, setTheme } = useThemeContext();
-  const { activeProfile, setProfile, profiles } = useDevUser();
+  const { activeProfile, setProfile, profiles, hasPermission } = useDevUser();
+  const canConfigure = hasPermission("configurar");
   const [count, setCount] = useState(0);
   const [countActive, setCountActive] = useState(0);
 
@@ -99,40 +100,45 @@ export default function Page() {
         <Greeting>Bom dia, {user?.name} 👋</Greeting>
       </GreetingContainer>
       <CardsContainer>
-        <ModuleCard $color="#a855f7">
-          <CardIcon>🧪</CardIcon>
-          <Card>
-            <CardTitle>Testar Alertas</CardTitle>
-            <CardDescription>Dispare cada tipo de alerta para verificar o comportamento.</CardDescription>
-            <AlertButtonsGrid>
-              <AlertTestButton $color="#4ade80" onClick={() => callMessage("Operação realizada com sucesso!", "success")}>✓ Sucesso</AlertTestButton>
-              <AlertTestButton $color="#fbbf24" onClick={() => callMessage("Atenção: verifique os dados!", "warning")}>⚠ Aviso</AlertTestButton>
-              <AlertTestButton $color="#f87171" onClick={() => callMessage("Erro ao processar a requisição.", "error")}>✕ Erro</AlertTestButton>
-              <AlertTestButton $color="#60a5fa" onClick={() => callMessage("Informação importante aqui.", "info")}>ℹ Info</AlertTestButton>
-            </AlertButtonsGrid>
-          </Card>
-        </ModuleCard>
+        {canConfigure && (
+          <ModuleCard $color="#a855f7">
+            <CardIcon>🧪</CardIcon>
+            <Card>
+              <CardTitle>Testar Alertas</CardTitle>
+              <CardDescription>Dispare cada tipo de alerta para verificar o comportamento.</CardDescription>
+              <AlertButtonsGrid>
+                <AlertTestButton $color="#4ade80" onClick={() => callMessage("Operação realizada com sucesso!", "success")}>✓ Sucesso</AlertTestButton>
+                <AlertTestButton $color="#fbbf24" onClick={() => callMessage("Atenção: verifique os dados!", "warning")}>⚠ Aviso</AlertTestButton>
+                <AlertTestButton $color="#f87171" onClick={() => callMessage("Erro ao processar a requisição.", "error")}>✕ Erro</AlertTestButton>
+                <AlertTestButton $color="#60a5fa" onClick={() => callMessage("Informação importante aqui.", "info")}>ℹ Info</AlertTestButton>
+              </AlertButtonsGrid>
+            </Card>
+          </ModuleCard>
+        )}
 
-        <ModuleCard $color="#ec4899">
-          <CardIcon>🎨</CardIcon>
-          <Card>
-            <CardTitle>Testar Temas</CardTitle>
-            <CardDescription>Escolha um tema para aplicar em toda a aplicação. A escolha fica salva.</CardDescription>
-            <ThemeButtonsGrid>
-              {THEME_OPTIONS.map((t) => (
-                <ThemeButton
-                  key={t.name}
-                  $color={t.color}
-                  $active={activeTheme === t.name}
-                  onClick={() => setTheme(t.name)}
-                >
-                  <ThemeDot $color={t.color} />
-                  {activeTheme === t.name ? `✓ ${t.label}` : t.label}
-                </ThemeButton>
-              ))}
-            </ThemeButtonsGrid>
-          </Card>
-        </ModuleCard>
+        {canConfigure && (
+          <ModuleCard $color="#ec4899">
+            <CardIcon>🎨</CardIcon>
+            <Card>
+              <CardTitle>Testar Temas</CardTitle>
+              <CardDescription>Escolha um tema para aplicar em toda a aplicação. A escolha fica salva.</CardDescription>
+              <ThemeButtonsGrid>
+                {THEME_OPTIONS.map((t) => (
+                  <ThemeButton
+                    key={t.name}
+                    $color={t.color}
+                    $active={activeTheme === t.name}
+                    onClick={() => setTheme(t.name)}
+                  >
+                    <ThemeDot $color={t.color} />
+                    {activeTheme === t.name ? `✓ ${t.label}` : t.label}
+                  </ThemeButton>
+                ))}
+              </ThemeButtonsGrid>
+            </Card>
+          </ModuleCard>
+        )}
+
         <ModuleCard $color="#0ea5e9">
           <CardIcon>
             <ProfileAvatar $color={activeProfile.color} style={{ width: "100%", height: "100%", borderRadius: "1vw", fontSize: "1.2vw" }}>
@@ -164,14 +170,16 @@ export default function Page() {
             </ProfilesGrid>
           </Card>
         </ModuleCard>
-        <FeatureFlagsCard />
-        <GridOverlay />
-        <ViewportSimulator />
-        <RouteInspector />
-        <SideBySideRow>
-          <CSSTokenInspector />
-          <StorageInspector />
-        </SideBySideRow>
+        {canConfigure && <FeatureFlagsCard />}
+        {/* <GridOverlay /> */}
+        {/* <ViewportSimulator /> */}
+        {canConfigure && <RouteInspector />}
+        {canConfigure && (
+          <SideBySideRow>
+            <CSSTokenInspector />
+            <StorageInspector />
+          </SideBySideRow>
+        )}
       </CardsContainer>
     </Container>
   );
