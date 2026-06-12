@@ -1,7 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { mockProcesses, type Process } from "./mock";
+
+const LS_KEY = 'ministerio_processes';
+
 import SummaryCard from "@/components/SummaryCard";
 import ProcessTable from "@/components/ProcessTable";
 import { ControlsCard, ControlsWrapper, PageWrapper, SummaryRow } from "./styled";
@@ -111,12 +114,38 @@ function normalize(str: string) {
 /* ─── Componente ────────────────────────────────────────── */
 
 export default function ProcessDashboard() {
+    const [processes, setProcesses] = useState<Process[]>(mockProcesses);
+
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem(LS_KEY);
+            if (stored) setProcesses(JSON.parse(stored) as Process[]);
+        } catch {
+            // ignore
+        }
+    }, []);
     const [searchNup,     setSearchNup]     = useState('');
     const [searchAssunto, setSearchAssunto] = useState('');
     const [searchObs,     setSearchObs]     = useState('');
     const [selectedStatuses, setSelectedStatuses] = useState<Process['status'][]>([]);
     const [selectedTipos, setSelectedTipos] = useState<Process['tipo'][]>([]);
     const [filtersOpen, setFiltersOpen] = useState(false);
+
+    function updateProcess(updated: Process) {
+        setProcesses((prev) => {
+            const next = prev.map((p) => p.id === updated.id ? updated : p);
+            localStorage.setItem(LS_KEY, JSON.stringify(next));
+            return next;
+        });
+    }
+
+    function deleteProcess(id: string) {
+        setProcesses((prev) => {
+            const next = prev.filter((p) => p.id !== id);
+            localStorage.setItem(LS_KEY, JSON.stringify(next));
+            return next;
+        });
+    }
 
     function toggleStatus(s: Process['status']) {
         setSelectedStatuses((prev) =>
@@ -146,7 +175,7 @@ export default function ProcessDashboard() {
         const qNup     = normalize(searchNup.trim());
         const qAssunto = normalize(searchAssunto.trim());
         const qObs     = normalize(searchObs.trim());
-        return mockProcesses.filter((p: Process) => {
+        return processes.filter((p: Process) => {
             if (selectedStatuses.length && !selectedStatuses.includes(p.status)) return false;
             if (selectedTipos.length && !selectedTipos.includes(p.tipo)) return false;
             if (qNup     && !normalize(p.nup).includes(qNup)) return false;
@@ -154,12 +183,12 @@ export default function ProcessDashboard() {
             if (qObs     && !normalize(p.observacoes ?? '').includes(qObs)) return false;
             return true;
         });
-    }, [searchNup, searchAssunto, searchObs, selectedStatuses, selectedTipos]);
+    }, [processes, searchNup, searchAssunto, searchObs, selectedStatuses, selectedTipos]);
 
-    const total       = mockProcesses.length;
-    const finalizados = mockProcesses.filter((p) => p.status === 'Finalizado').length;
-    const sobrestados = mockProcesses.filter((p) => p.status === 'Sobrestado').length;
-    const novos       = mockProcesses.filter((p) => p.tipo === 'novo').length;
+    const total       = processes.length;
+    const finalizados = processes.filter((p) => p.status === 'Finalizado').length;
+    const sobrestados = processes.filter((p) => p.status === 'Sobrestado').length;
+    const novos       = processes.filter((p) => p.tipo === 'novo').length;
 
     return (
         <PageWrapper>
@@ -269,7 +298,7 @@ export default function ProcessDashboard() {
             </FilterPanel>
             </ControlsWrapper>
 
-            <ProcessTable processes={filtered} />
+            <ProcessTable processes={filtered} onUpdate={updateProcess} onDelete={deleteProcess} />
         </PageWrapper>
     );
 }

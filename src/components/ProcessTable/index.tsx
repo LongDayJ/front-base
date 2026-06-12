@@ -9,6 +9,8 @@ type SortKey = keyof Pick<Process, 'status' | 'nup' | 'tipo' | 'relatorio' | 'as
 
 interface ProcessTableProps {
     processes: Process[];
+    onUpdate: (updated: Process) => void;
+    onDelete: (id: string) => void;
 }
 
 const COLUMNS: { key: SortKey; label: string; sortable: boolean }[] = [
@@ -19,7 +21,7 @@ const COLUMNS: { key: SortKey; label: string; sortable: boolean }[] = [
     { key: 'assunto',   label: 'Assunto / Demanda', sortable: true },
 ];
 
-export default function ProcessTable({ processes }: ProcessTableProps) {
+export default function ProcessTable({ processes, onUpdate, onDelete }: ProcessTableProps) {
     const [sortKey, setSortKey] = useState<SortKey>('status');
     const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
 
@@ -69,7 +71,7 @@ export default function ProcessTable({ processes }: ProcessTableProps) {
                             <td colSpan={7}>Nenhum processo encontrado</td>
                         </EmptyRow>
                     ) : (
-                        sorted.map((p) => <ProcessRow key={p.id} process={p} />)
+                        sorted.map((p) => <ProcessRow key={p.id} process={p} onUpdate={onUpdate} onDelete={onDelete} />)
                     )}
                 </Tbody>
             </Table>

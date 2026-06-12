@@ -16,6 +16,7 @@ const APP_ROUTES: Route[] = [
     { label: "Dev", path: "/dev" },
     { label: "Cards", path: "/cards" },
     { label: "Processos", path: "/processos" },
+    { label: "Mapa", path: "/mapa" },
 ];
 
 export function DevRoutes() {
