@@ -24,8 +24,8 @@ import {
 
 const GEO_URL = "/brazil-states.json";
 
-// Landscape SVG viewport — wider than Brazil, gray fills the sides
-const W = 900;
+// SVG viewport sized to Brazil's geographic extent (LON_PHYSICAL ≈ LAT_PHYSICAL ≈ 40°)
+const W = 670;
 const H = 680;
 
 // Brazil geographic bounds
@@ -333,8 +333,8 @@ export default function BrazilMap({ data }: Props) {
                             <svg
                                 ref={svgRef}
                                 viewBox={`0 0 ${W} ${H}`}
-                                preserveAspectRatio="xMidYMid slice"
-                                style={{ width: "100%", height: "auto", cursor: isDragging ? "grabbing" : "grab", display: "block" }}
+                                preserveAspectRatio="xMidYMid meet"
+                                style={{ width: "100%", cursor: isDragging ? "grabbing" : "grab", display: "block" }}
                                 onMouseDown={onMouseDown}
                                 onMouseMove={onMouseMove}
                                 onMouseUp={onMouseUp}

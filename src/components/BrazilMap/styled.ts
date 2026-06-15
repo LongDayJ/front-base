@@ -92,6 +92,7 @@ export const MapMapArea = styled.div`
     flex: 1;
     position: relative;
     min-width: 0;
+    width: 100%;
 `;
 
 export const MapSvgClip = styled.div`
@@ -99,6 +100,11 @@ export const MapSvgClip = styled.div`
     border-radius: 8px;
     background: #f8fafc;
     line-height: 0;
+    width: 100%;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 `;
 
 export const TooltipBox = styled.div`

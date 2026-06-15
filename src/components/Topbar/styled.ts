@@ -321,7 +321,7 @@ export const DevRoutesItem = styled.button`
     border: none;
     cursor: pointer;
     color: ${({ theme }) => theme.colors.text.half};
-    font-size: ${({ theme }) => theme.fontSizes.xs};
+    font-size: ${({ theme }) => theme.fontSizes.md};
     font-weight: ${({ theme }) => theme.fontWeights.medium};
     transition: background 0.15s, color 0.15s;
     text-align: left;

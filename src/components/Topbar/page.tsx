@@ -44,6 +44,21 @@ export default function Topbar() {
     const [remaining, setRemaining] = useState<number | null>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const update = () => {
+            document.documentElement.style.setProperty(
+                "--topbar-height",
+                el.getBoundingClientRect().height + "px"
+            );
+        };
+        update();
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
+    }, []);
 
     useEffect(() => {
         if (!user?.expiresAt) return;
@@ -84,7 +99,7 @@ export default function Topbar() {
     }
 
     return (
-        <TopbarContainer>
+        <TopbarContainer ref={containerRef}>
             <TopbarBrand>
                 <TopbarLogo>MS</TopbarLogo>
                 <div>

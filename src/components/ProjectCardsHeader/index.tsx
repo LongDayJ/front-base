@@ -15,6 +15,7 @@ export interface ProjectCardsHeaderProps {
     avgColor: string;
     filtered: number;
     total: number;
+    collapsed?: boolean;
     searchName: string;
     onSearchName: (v: string) => void;
     searchState: string;
@@ -39,6 +40,7 @@ export default function ProjectCardsHeader({
     avgColor,
     filtered,
     total,
+    collapsed,
     searchName,
     onSearchName,
     searchState,
@@ -65,6 +67,7 @@ export default function ProjectCardsHeader({
                     color={avgColor}
                     filtered={filtered}
                     total={total}
+                    collapsed={collapsed}
                 />
                 <SearchFilterBar
                     searchName={searchName}

@@ -33,25 +33,31 @@ export const TopBar = styled.div<{ $filtersOpen: boolean }>`
     }
 `;
 
-export const ProgressSection = styled.div`
+export const ProgressSection = styled.div<{ $collapsed?: boolean }>`
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    padding: 1rem 1.25rem;
+    gap: ${({ $collapsed }) => ($collapsed ? '0' : '0.35rem')};
+    padding: ${({ $collapsed }) => ($collapsed ? '0.5rem 1rem' : '1rem 1.25rem')};
     border-right: 1px solid #e9edf3;
+    transition: padding 0.3s ease, gap 0.3s ease;
 
     @media (max-width: 760px) {
         border-right: none;
-        border-bottom: 1px solid #e9edf3;
+        border-bottom: ${({ $collapsed }) => ($collapsed ? 'none' : '1px solid #e9edf3')};
+        transition: padding 0.3s ease, border 0.3s ease;
     }
 `;
 
-export const ProgressBarLabel = styled.span`
+export const ProgressBarLabel = styled.span<{ $collapsed?: boolean }>`
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.07em;
     text-transform: uppercase;
     color: #94a3b8;
+    max-height: ${({ $collapsed }) => ($collapsed ? '0' : '1.5rem')};
+    opacity: ${({ $collapsed }) => ($collapsed ? 0 : 1)};
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.2s ease;
 `;
 
 export const ProgressBarRow = styled.div`
@@ -60,12 +66,13 @@ export const ProgressBarRow = styled.div`
     gap: 0.75rem;
 `;
 
-export const ProgressBarTrack = styled.div`
+export const ProgressBarTrack = styled.div<{ $collapsed?: boolean }>`
     flex: 1;
-    height: 9px;
+    height: ${({ $collapsed }) => ($collapsed ? '4px' : '9px')};
     border-radius: 999px;
     background: #e2e8f0;
     overflow: hidden;
+    transition: height 0.3s ease;
 `;
 
 export const ProgressBarFill = styled.div<{ $value: number; $color: string }>`
@@ -76,18 +83,20 @@ export const ProgressBarFill = styled.div<{ $value: number; $color: string }>`
     transition: width 0.45s ease;
 `;
 
-export const ProgressBarPct = styled.span<{ $color: string }>`
-    font-size: 1rem;
+export const ProgressBarPct = styled.span<{ $color: string; $collapsed?: boolean }>`
+    font-size: ${({ $collapsed }) => ($collapsed ? '0.75rem' : '1rem')};
     font-weight: 700;
     color: ${({ $color }) => $color};
-    min-width: 2.8rem;
+    min-width: ${({ $collapsed }) => ($collapsed ? '2rem' : '2.8rem')};
     text-align: right;
     font-family: ${({ theme }) => theme.fonts.primary};
+    transition: font-size 0.3s ease, min-width 0.3s ease;
 `;
 
-export const ProgressBarSub = styled.span`
-    font-size: 0.72rem;
+export const ProgressBarSub = styled.span<{ $collapsed?: boolean }>`
+    font-size: ${({ $collapsed }) => ($collapsed ? '0.62rem' : '0.72rem')};
     color: #94a3b8;
+    transition: font-size 0.3s ease;
 `;
 
 export const RightControls = styled.div`
@@ -224,14 +233,16 @@ export const ClearButton = styled.button`
 
 export const FilterPanel = styled.div<{ $open: boolean }>`
     background: #fff;
-    border: ${({ $open }) => ($open ? "1px solid #dde3ec" : "none")};
+    border: 1px solid ${({ $open }) => ($open ? "#dde3ec" : "transparent")};
     border-radius: 0 0 10px 10px;
-    box-shadow: ${({ $open }) => ($open ? "0 1px 4px rgba(0,0,0,0.05)" : "none")};
+    box-shadow: ${({ $open }) => ($open ? "0 1px 4px rgba(0,0,0,0.05)" : "0 0 0 rgba(0,0,0,0)")};
     overflow: hidden;
     max-height: ${({ $open }) => ($open ? "500px" : "0")};
-    transition: max-height 0.25s ease;
-    // margin-top: ${({ $open }) => ($open ? "0.5rem" : "0")};
     margin-bottom: ${({ $open }) => ($open ? "1rem" : "0")};
+    transition: max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                margin-bottom 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.55s ease,
+                box-shadow 0.55s ease;
 
     @media (max-width: 760px) {
         max-height: ${({ $open }) => ($open ? "70vh" : "0")};
@@ -241,7 +252,6 @@ export const FilterPanel = styled.div<{ $open: boolean }>`
 
 export const FilterPanelInner = styled.div`
     padding: 1rem 1.25rem 1.1rem;
-    // border-top: 1px solid #e9edf3;
 `;
 
 export const FilterColumnsRow = styled.div`
@@ -510,4 +520,17 @@ export const ProgressLabel = styled.span`
     font-size: 0.63rem;
     color: #94a3b8;
     font-weight: 500;
+`;
+
+export const CollapsesSentinel = styled.div`
+    height: 1px;
+    overflow: hidden;
+    pointer-events: none;
+`;
+
+export const StickyHeader = styled.div`
+    position: sticky;
+    top: var(--topbar-height, 56px);
+    z-index: 30;
+    background: #f0f2f5;
 `;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { type Status, MOCK_ITEMS } from "./mock";
 import {
     type ProgressRange,
@@ -15,6 +15,7 @@ import {
     CardTitleText,
     CardWrapper,
     CardsGrid,
+    CollapsesSentinel,
     DateBadge,
     Divider,
     EmptyState,
@@ -29,6 +30,7 @@ import {
     ProgressLabel,
     ProgressWrapper,
     StatusBadge,
+    StickyHeader,
 } from "./styled";
 import ProjectCardsHeader from "@/components/ProjectCardsHeader";
 
@@ -98,6 +100,14 @@ export default function ProjectCards() {
     const [progressRange,     setProgressRange]    = useState<ProgressRange>("all");
     const [sortBy,            setSortBy]           = useState<SortOption>("progress_desc");
     const [filtersOpen,       setFiltersOpen]      = useState(false);
+    const [collapsed, setCollapsed] = useState(false);
+
+    useEffect(() => {
+        const check = () => setCollapsed(window.scrollY > 40);
+        check();
+        window.addEventListener('scroll', check, { passive: true });
+        return () => window.removeEventListener('scroll', check);
+    }, []);
 
     const activeFilterCount =
         (searchName.trim() ? 1 : 0) +
@@ -155,7 +165,10 @@ export default function ProjectCards() {
 
     return (
         <PageWrapper>
+            <CollapsesSentinel />
+            <StickyHeader>
             <ProjectCardsHeader
+                collapsed={collapsed}
                 avgProgress={avgProgress}
                 avgColor={avgColor}
                 filtered={filtered.length}
@@ -178,6 +191,7 @@ export default function ProjectCards() {
                 onProgressRange={setProgressRange}
                 onSortBy={setSortBy}
             />
+            </StickyHeader>
 
             {/* ── Grid de cards ── */}
             <CardsGrid>

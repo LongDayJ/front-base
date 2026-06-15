@@ -14,8 +14,8 @@ export default function Loading({
     text = "Carregando...",
     height = "100%",
     width = "100%",
-    heightSpinner = "3vw",
-    widthSpinner = "3vw",
+    heightSpinner = "clamp(40px, 5vw, 64px)",
+    widthSpinner = "clamp(40px, 5vw, 64px)",
 }: LoadingProps) {
     return (
         <LoadingContainer $height={height} $width={width}>

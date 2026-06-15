@@ -35,15 +35,15 @@ export const LoadingSpinner = styled.div<LoadingContainerProps>`
 
     border-radius: 100%;
 
-    border: 0.35vw solid ${({ theme }) => theme.colors.grayUltraLight};
+    border: clamp(2px, 0.35vw, 4px) solid ${({ theme }) => theme.colors.grayUltraLight};
 
-    border-top: 0.35vw solid ${({ theme }) => theme.colors.greenBackground};
+    border-top: clamp(2px, 0.35vw, 4px) solid ${({ theme }) => theme.colors.greenBackground};
 
     animation: ${spin} 0.8s linear infinite;
 `;
 
 export const LoadingText = styled.span`
-    font-size: 1vw;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
     font-weight: ${({ theme }) => theme.fontWeights.medium};
 
     font-family: ${({ theme }) => theme.fonts.sans};

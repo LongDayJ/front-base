@@ -13,9 +13,10 @@ export const Tr = styled.tr`
         display: block;
         background: #fff;
         border: 1px solid #e2e8f0;
-        border-radius: 10px;
+        border-radius: 12px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         margin-bottom: 0.65rem;
+        padding: 0.15rem 0;
 
         &:last-child { border-bottom: 1px solid #e2e8f0; margin-bottom: 0; }
         &:hover { background: #fff; }
@@ -32,7 +33,7 @@ export const Td = styled.td`
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        padding: 0.5rem 0.75rem;
+        padding: 0.65rem 0.9rem;
         border-bottom: 1px solid #f1f5f9;
         white-space: normal !important;
 
@@ -40,13 +41,13 @@ export const Td = styled.td`
 
         &[data-label]::before {
             content: attr(data-label);
-            font-size: 0.63rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #94a3b8;
+            letter-spacing: 0.06em;
+            color: #64748b;
             flex-shrink: 0;
-            min-width: 72px;
+            min-width: 96px;
             margin-right: 0.6rem;
             padding-top: 0.15rem;
         }
@@ -57,13 +58,21 @@ export const TdObs = styled(Td)`
     color: #64748b;
     max-width: 220px;
 
-    ${MOBILE} { max-width: none; }
+    ${MOBILE} {
+        max-width: none;
+        color: #1e293b;
+        font-size: 0.84rem;
+    }
 `;
 
 export const TdAssunto = styled(Td)`
     max-width: 360px;
 
-    ${MOBILE} { max-width: none; }
+    ${MOBILE} {
+        max-width: none;
+        font-size: 0.84rem;
+        color: #1e293b;
+    }
 `;
 
 export const ReportLink = styled.a`

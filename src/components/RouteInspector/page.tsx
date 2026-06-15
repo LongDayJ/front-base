@@ -37,8 +37,9 @@ const REGISTERED_ROUTES = [
     { path: "/login2", label: "Login v2",  group: "Pública"     },
     { path: "/dev",    label: "Dev Tools", group: "Autenticada" },
     { path: "/cards",  label: "Cards",  group: "Autenticada" },
-    { path: "/processos",  label: "Processos",  group: "Autenticada" },
-    { path: "/mapa",  label: "Mapa do Brasil",  group: "Autenticada" },
+    { path: "/tabela",  label: "Tabela",  group: "Autenticada" },
+    { path: "/mapa",            label: "Mapa do Brasil",  group: "Autenticada" },
+    { path: "/loading-preview", label: "Loading Preview", group: "Dev"         },
   ];
 
 const COLOR = "#84cc16";

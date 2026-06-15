@@ -9,6 +9,7 @@ import AuthWrapper from "@/providers/AuthWrapper";
 import { DevUserProvider } from "@/context/devUser/devUser.context";
 import { FeatureFlagsProvider } from "@/context/featureFlags/featureFlags.context";
 import DebugBar from "@/components/DebugBar/page";
+import VerboseLogger from "@/components/VerboseLogger";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     const [styledSheet] = useState(() => new ServerStyleSheet());
@@ -26,6 +27,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                     <FeatureFlagsProvider>
                         <AuthWrapper>{children}</AuthWrapper>
                         <DebugBar />
+                        <VerboseLogger />
                     </FeatureFlagsProvider>
                 </DevUserProvider>
             </AlertProvider>

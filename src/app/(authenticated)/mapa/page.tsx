@@ -10,9 +10,9 @@ const PageWrapper = styled.div`
 
     @media (max-width: 768px) {
         padding: 0;
-        min-height: 100dvh;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
     }
 `;
 

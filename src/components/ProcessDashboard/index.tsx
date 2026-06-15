@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { mockProcesses, type Process } from "./mock";
 
 const LS_KEY = 'ministerio_processes';
 
 import SummaryCard from "@/components/SummaryCard";
 import ProcessTable from "@/components/ProcessTable";
-import { ControlsCard, ControlsWrapper, PageWrapper, SummaryRow } from "./styled";
+import {
+    ControlsCard, ControlsWrapper, MiniChip, MiniCount, MiniLabelFull, MiniLabelShort,
+    MiniSummaryBar, PageWrapper, SummaryRow,
+} from "./styled";
 import {
     ClearButton,
     FilterActiveBadge,
@@ -115,6 +118,8 @@ function normalize(str: string) {
 
 export default function ProcessDashboard() {
     const [processes, setProcesses] = useState<Process[]>(mockProcesses);
+    const [collapsed, setCollapsed] = useState(false);
+    const summaryRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         try {
@@ -123,6 +128,17 @@ export default function ProcessDashboard() {
         } catch {
             // ignore
         }
+    }, []);
+
+    useEffect(() => {
+        const el = summaryRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => setCollapsed(!entry.isIntersecting),
+            { threshold: 0 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
     }, []);
     const [searchNup,     setSearchNup]     = useState('');
     const [searchAssunto, setSearchAssunto] = useState('');
@@ -190,9 +206,16 @@ export default function ProcessDashboard() {
     const sobrestados = processes.filter((p) => p.status === 'Sobrestado').length;
     const novos       = processes.filter((p) => p.tipo === 'novo').length;
 
+    const miniItems = [
+        { label: "Total",  fullLabel: "Total",        count: total,       color: "#9e9e9e" },
+        { label: "Final.", fullLabel: "Finalizados",  count: finalizados, color: "#34a853" },
+        { label: "Sobr.",  fullLabel: "Sobrestados",  count: sobrestados, color: "#f57c00" },
+        { label: "Novos",  fullLabel: "Novos PCDTs",  count: novos,       color: "#1a73e8" },
+    ];
+
     return (
         <PageWrapper>
-            <SummaryRow>
+            <SummaryRow ref={summaryRef} $collapsed={collapsed}>
                 <SummaryCard label="Total de Processos" count={total}       sublabel="registros cadastrados"    borderColor="#9e9e9e" icon={<IconDatabase />}    />
                 <SummaryCard label="Finalizados"         count={finalizados} sublabel="publicados / encerrados"  borderColor="#34a853" icon={<IconCheckCircle />} />
                 <SummaryCard label="Sobrestados"          count={sobrestados} sublabel="sobrestados / aguardando" borderColor="#f57c00" icon={<IconXCircle />}     />
@@ -200,6 +223,15 @@ export default function ProcessDashboard() {
             </SummaryRow>
 
             <ControlsWrapper>
+            <MiniSummaryBar $visible={collapsed}>
+                {miniItems.map(({ label, fullLabel, count, color }) => (
+                    <MiniChip key={label} $color={color}>
+                        <MiniCount $color={color}>{count}</MiniCount>
+                        <MiniLabelFull>{fullLabel}</MiniLabelFull>
+                        <MiniLabelShort>{label}</MiniLabelShort>
+                    </MiniChip>
+                ))}
+            </MiniSummaryBar>
             <ControlsCard $filtersOpen={filtersOpen}>
                 <RightControls>
                     <SearchAndFilterRow>

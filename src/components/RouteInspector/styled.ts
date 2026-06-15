@@ -4,19 +4,14 @@ import styled from "styled-components";
 
 export const RouteCard = styled.div<{ $color: string }>`
     width: 100%;
-
-    padding: 2.5vh 2vw;
-
+    padding: 1.25rem 1rem;
     border-radius: ${({ theme }) => theme.borderRadius.xs};
     border: 0.25vh solid transparent;
     border-top: 1vh solid ${({ $color }) => $color};
-
     background: ${({ theme }) => theme.colors.grayLight};
-
     display: flex;
     flex-direction: column;
-    gap: 1.5vh;
-
+    gap: 1rem;
     box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.08);
 
     @media (max-width: 768px) {
@@ -27,57 +22,42 @@ export const RouteCard = styled.div<{ $color: string }>`
 export const RouteCardHeader = styled.div`
     display: flex;
     align-items: center;
-    gap: 1vw;
+    gap: 0.75rem;
 `;
 
 export const RouteCardIcon = styled.div`
-    width: 3.5vw;
-    height: 3.5vw;
-    border-radius: 0.8vw;
+    width: clamp(32px, 3.5vw, 48px);
+    height: clamp(32px, 3.5vw, 48px);
+    border-radius: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5vw;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
     background: ${({ theme }) => theme.colors.grayUltraLight};
     flex-shrink: 0;
-
-    @media (max-width: 768px) {
-        width: 10dvw;
-        height: 10dvw;
-        font-size: ${({ theme }) => theme.fontSizes.lg};
-        border-radius: 2vw;
-    }
 `;
 
 export const RouteHeaderText = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.2vh;
+    gap: 0.2rem;
     flex: 1;
 `;
 
 export const RouteCardTitle = styled.h2`
-    font-size: 1.4vw;
+    font-size: ${({ theme }) => theme.fontSizes.lg};
     font-weight: ${({ theme }) => theme.fontWeights.bold};
     color: ${({ theme }) => theme.colors.greenDark};
     font-family: ${({ theme }) => theme.fonts.primary};
     line-height: 120%;
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.lg};
-    }
 `;
 
 export const RouteCardDescription = styled.p`
-    font-size: 0.85vw;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     font-weight: ${({ theme }) => theme.fontWeights.regular};
     color: ${({ theme }) => theme.colors.gray};
     font-family: ${({ theme }) => theme.fonts.sans};
     line-height: 160%;
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.sm};
-    }
 `;
 
 export const RouteList = styled.div`
@@ -92,7 +72,7 @@ export const RouteList = styled.div`
 export const RouteRow = styled.button<{ $active: boolean; $color: string }>`
     display: flex;
     align-items: center;
-    gap: 0.75vw;
+    gap: 0.5rem;
     padding: 0.6rem 0.9rem;
     border: none;
     border-left: 3px solid ${({ $active, $color }) => ($active ? $color : "transparent")};
@@ -112,80 +92,66 @@ export const RouteRow = styled.button<{ $active: boolean; $color: string }>`
 `;
 
 export const RoutePath = styled.span`
-    font-size: 0.78vw;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     font-weight: ${({ theme }) => theme.fontWeights.medium};
     font-family: ${({ theme }) => theme.fonts.mono};
     color: ${({ theme }) => theme.colors.greenDark};
     flex-shrink: 0;
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.xs};
-    }
 `;
 
 export const RouteLabel = styled.span`
-    font-size: 0.72vw;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     font-weight: ${({ theme }) => theme.fontWeights.regular};
     color: ${({ theme }) => theme.colors.gray};
     font-family: ${({ theme }) => theme.fonts.sans};
     flex: 1;
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.xs};
-    }
 `;
 
 export const RouteGroupBadge = styled.span<{ $group: string }>`
-    font-size: 0.55vw;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
     font-weight: ${({ theme }) => theme.fontWeights.bold};
     font-family: ${({ theme }) => theme.fonts.sans};
-    padding: 0.08rem 0.4rem;
+    padding: 0.1rem 0.45rem;
     border-radius: 999px;
     white-space: nowrap;
     background: ${({ $group }) =>
-        $group === "Autenticada" ? "rgba(99,102,241,0.1)" : "rgba(16,185,129,0.1)"};
+        $group === "Autenticada" ? "rgba(99,102,241,0.1)" :
+        $group === "Dev"         ? "rgba(234,179,8,0.1)"  :
+                                   "rgba(16,185,129,0.1)"};
     color: ${({ $group }) =>
-        $group === "Autenticada" ? "#6366f1" : "#10b981"};
+        $group === "Autenticada" ? "#6366f1" :
+        $group === "Dev"         ? "#a16207" :
+                                   "#10b981"};
     border: 1px solid ${({ $group }) =>
-        $group === "Autenticada" ? "rgba(99,102,241,0.25)" : "rgba(16,185,129,0.25)"};
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.xxxs};
-    }
+        $group === "Autenticada" ? "rgba(99,102,241,0.25)" :
+        $group === "Dev"         ? "rgba(234,179,8,0.35)"  :
+                                   "rgba(16,185,129,0.25)"};
 `;
 
 export const ParamsSection = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    border: 1px solid rgba(0, 0, 0, 0.07);
+    border: 1px solid rgba(0, 0, 00, 0.07);
     border-radius: 8px;
     background: ${({ theme }) => theme.colors.white};
     padding: 0.7rem 0.9rem;
 `;
 
 export const ParamsSectionTitle = styled.span`
-    font-size: 0.65vw;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
     font-weight: ${({ theme }) => theme.fontWeights.bold};
     color: ${({ theme }) => theme.colors.gray};
     font-family: ${({ theme }) => theme.fonts.sans};
     text-transform: uppercase;
     letter-spacing: 0.05em;
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.xxxs};
-    }
 `;
 
 export const ActivePathDisplay = styled.span<{ $color: string }>`
-    font-size: 0.78vw;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     font-weight: ${({ theme }) => theme.fontWeights.medium};
     font-family: ${({ theme }) => theme.fonts.mono};
     color: ${({ $color }) => $color};
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.xs};
-    }
 `;
 
 export const ParamsTable = styled.table`
@@ -198,7 +164,7 @@ export const ParamsTableHead = styled.thead`
 `;
 
 export const ParamsTh = styled.th`
-    font-size: 0.6vw;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
     font-weight: ${({ theme }) => theme.fontWeights.bold};
     color: ${({ theme }) => theme.colors.gray};
     font-family: ${({ theme }) => theme.fonts.sans};
@@ -206,14 +172,10 @@ export const ParamsTh = styled.th`
     padding: 0.3rem 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.xxxs};
-    }
 `;
 
 export const ParamsTd = styled.td`
-    font-size: 0.72vw;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     font-family: ${({ theme }) => theme.fonts.mono};
     color: ${({ theme }) => theme.colors.greenDark};
     padding: 0.3rem 0.5rem;
@@ -222,19 +184,11 @@ export const ParamsTd = styled.td`
     &:last-child {
         color: ${({ theme }) => theme.colors.gray};
     }
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.xs};
-    }
 `;
 
 export const EmptyParams = styled.span`
-    font-size: 0.72vw;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     color: ${({ theme }) => theme.colors.gray};
     font-family: ${({ theme }) => theme.fonts.sans};
     font-style: italic;
-
-    @media (max-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSizes.xs};
-    }
 `;

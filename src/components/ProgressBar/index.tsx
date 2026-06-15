@@ -15,19 +15,20 @@ interface ProgressBarProps {
     color: string;
     filtered: number;
     total: number;
+    collapsed?: boolean;
 }
 
-export default function ProgressBar({ value, color, filtered, total }: ProgressBarProps) {
+export default function ProgressBar({ value, color, filtered, total, collapsed }: ProgressBarProps) {
     return (
-        <ProgressSection>
-            <ProgressBarLabel>Progresso médio</ProgressBarLabel>
+        <ProgressSection $collapsed={collapsed}>
+            <ProgressBarLabel $collapsed={collapsed}>Progresso médio</ProgressBarLabel>
             <ProgressBarRow>
-                <ProgressBarTrack>
+                <ProgressBarTrack $collapsed={collapsed}>
                     <ProgressBarFill $value={value} $color={color} />
                 </ProgressBarTrack>
-                <ProgressBarPct $color={color}>{value}%</ProgressBarPct>
+                <ProgressBarPct $color={color} $collapsed={collapsed}>{value}%</ProgressBarPct>
             </ProgressBarRow>
-            <ProgressBarSub>{filtered} de {total} projetos</ProgressBarSub>
+            <ProgressBarSub $collapsed={collapsed}>{filtered} de {total} projetos</ProgressBarSub>
         </ProgressSection>
     );
 }
